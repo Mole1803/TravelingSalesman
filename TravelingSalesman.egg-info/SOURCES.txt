@@ -1,0 +1,5 @@
+setup.py
+TravelingSalesman.egg-info/PKG-INFO
+TravelingSalesman.egg-info/SOURCES.txt
+TravelingSalesman.egg-info/dependency_links.txt
+TravelingSalesman.egg-info/top_level.txt
