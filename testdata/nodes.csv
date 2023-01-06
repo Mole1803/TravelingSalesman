@@ -1,0 +1,10 @@
+a,b,1,Bidirectional
+a,c,4,Bidirectional
+a,d,6,Bidirectional
+a,e,8,Bidirectional
+b,c,3,Bidirectional
+b,d,8,Bidirectional
+b,e,5,Bidirectional
+c,d,2,Bidirectional
+c,e,9,Bidirectional
+d,e,2,Bidirectional
