@@ -1,40 +1,63 @@
-from random import random
+from copy import copy
 
-#from PyQt6 import QtWidgets,QtGui,uic
-#from PyQt6.QtQml import QQmlApplicationEngine
-#from PyQt6.QtWidgets import QMainWindow, QMenuBar, QMenu
-#from PyQt6.QtCore import Qt
+from PyQt6 import QtWidgets, QtCore, QtGui
+from PyQt6.QtWidgets import QListView
 
-
-
-
-
-import sys
-
-from PyQt6.QtCore import QStringListModel, QUrl
-from PyQt6.QtGui import QGuiApplication
-from PyQt6.QtQml import QQmlApplicationEngine
-from PyQt6.QtQuick import QQuickView
 
 
 def run():
-    app = QGuiApplication(sys.argv)
-    data_list = ["hello", "world", "foo", "bar"]
-
-    view = QQuickView()
-    view.setResizeMode(QQuickView.ResizeMode.SizeRootObjectToView)
-    my_model = QStringListModel()
-    my_model.setStringList(data_list)
-    view.setInitialProperties({"myModel": my_model})
-    qml_file = "view/main.qml"
-    view.setSource(QUrl.fromLocalFile(qml_file))
-
-    view.show()
-
-    #engine.load('view/main.qml')
-
+    """Runs the UI"""
+    app = QtWidgets.QApplication([])
+    window = MainApplication()
+    window.show()
     app.exec()
-    del view
+
+class canvas(QtWidgets.QGraphicsView):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.scene = QtWidgets.QGraphicsScene(self)
+        self.setScene(self.scene)
+        self.setMinimumSize(600, 400)
+        self.setMaximumSize(600, 400)
+        self.setSceneRect(0, 0, 600, 400)
+        self.scene.setBackgroundBrush(QtGui.QBrush(QtGui.QColor(255, 255, 255), QtCore.Qt.BrushStyle.SolidPattern))
+        self.ViewportAnchor = QtWidgets.QGraphicsView.ViewportAnchor.NoAnchor
+        self.setSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
+        self.color = QtCore.Qt.GlobalColor.green
+        self.pen_size = 2
+        self.setMouseTracking(True)
+        # Black background
 
 
 
+        #self.scene.addLine(0, 0, 100, 100, pen=QtGui.QPen(self.color, self.pen_size))
+
+    def mousePressEvent(self, event):
+        points = self.mapToScene(event.pos())
+        pos_x = points.x()
+        pos_y = points.y()
+        self.draw_point(pos_x, pos_y)
+
+    def mouseMoveEvent(self, event: QtGui.QMouseEvent) -> None:
+        pass
+
+    def draw_point(self, x, y):
+        radius = 4
+        #Filled Ellipse
+        self.scene.addEllipse(x, y, radius, radius, pen=QtGui.QPen(self.color, radius))
+
+
+class CListView(QListView):
+    def __init__(self,parent=None):
+        super().__init__(parent)
+
+
+class MainApplication(QtWidgets.QWidget):
+    """Main view for the application"""
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setMinimumSize(800, 600)
+        self.setWindowTitle("Main Application")
+        self.canvas = canvas(self)
+        self.canvas.setGeometry(0, 0, 800, 600)
