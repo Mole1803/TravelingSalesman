@@ -36,10 +36,10 @@ class CCanvasController(QObject):
 
     def draw_path(self, path: list):
         self.view.clear()
-        for i in path:
-            print(i)
-            first_point_index = i%len(self.point_list.points)
-            second_point_index = (i+1)%len(self.point_list.points)
+        for i in range(len(path)):
+            #print(path[i])
+            first_point_index =path[i]
+            second_point_index =path[i-1]
             self.view.draw_path(self.point_list.points[first_point_index][1],self.point_list.points[first_point_index][2],
                                 self.point_list.points[second_point_index][1],self.point_list.points[second_point_index][2])
 

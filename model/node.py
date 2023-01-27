@@ -1,12 +1,11 @@
 class Border:
     def __init__(self, weight, node_1, node_2):
         self.weight = weight
-        self.nodes = None
+        self.node = None
         self.set_nodes(node_1,node_2)
     def set_nodes(self,node_1, node_2):
-        self.nodes = (node_1, node_2)
-        self.nodes[0].addBorder(self)
-        self.nodes[1].addBorder(self)
+        self.node = node_1
+        node_2.addBorder(self)
 
 class Node:
     def __init__(self, name):

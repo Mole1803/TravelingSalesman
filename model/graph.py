@@ -49,6 +49,7 @@ class Graph:
             if not node2:
                 node2=Node(row[1])
             Border(int(row[2]), node1, node2)
+            Border(int(row[2]), node2, node1)
             #border_tupel = Border(row[0], node1, node2)
             #node_list.append(border_tupel)
             if node1 not in graph:
@@ -70,6 +71,7 @@ class Graph:
         result=[]
         for node in self.result:
             result.append(node.name)
+            #print(node.name)
         return result
 
     def getNextNodeGreedy(self,node):
@@ -77,23 +79,18 @@ class Graph:
         for border in node.borders:
             old = False
             if len(self.result)>0:
-                for old_node in self.result:
-                    if not old:
-                        if old_node in border.nodes:
-                            old=True
-                            break
+                if border.node in self.result:
+                    old=True
             if not old:
                 if not entfernung:
                     entfernung=border.weight
                 if border.weight<=entfernung:
-                    next_node=border.nodes
-        try:
-            next_node=[ele for ele in next_node if ele != node]
-        except:
-            next_node=[None]
+                    entfernung=border.weight
+                    next_node=border.node
+
         self.result.append(node)
         self.graph=[ele for ele in self.graph if ele != node]
-        return next_node[0]
+        return next_node
 
     def calculate_weight(self):
         weight=0
