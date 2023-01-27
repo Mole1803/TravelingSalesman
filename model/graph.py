@@ -1,44 +1,102 @@
 import csv
+import math
+
 from model.node import Border,Node
 
-def read_csv(csv_file):
-    """Reads a csv file and returns a list of lists"""
-    with open(csv_file, 'r') as f:
-        reader = csv.reader(f)
-        return list(reader)
+class Graph:
+    def __init__(self):
+        #self.csv_file=csv_file
+        #self.points=[]
+        self.borders=[]
+        self.graph=[]
+        self.result=[]
+        self.create_nodes()
 
-def create_nodes(csv_file):
-    """Creates nodes from a csv file"""
-    data = read_csv(csv_file)
-    graph = []
-    node_list = []
-    for row in data:
-        node1=None
-        node2=None
-        for node in graph:
-            if row[0]==node.name:
-                node1=node
-            if row[1]==node.name:
-                node2=node
-        if not node1:
-            node1=Node(row[0])
-        if not node2:
-            node2=Node(row[1])
-        Border(int(row[2]), node1, node2)
-        #border_tupel = Border(row[0], node1, node2)
-        #node_list.append(border_tupel)
-        if node1 not in graph:
-            graph.append(node1)
-        if node2 not in graph:
-            graph.append(node2)
-    print(graph)
-    return graph, node_list
+    def read_points(self,points):
+        #self.points=points
+        for i in range(len(points)):
+            for j in range(i+1,len(points)):
+                self.borders.append((points[i][0],points[j][0],Graph.calculate_single_weight(points[i],points[j])))
+
+    @staticmethod
+    def calculate_single_weight(point1,point2):
+        x1,x2=point1[1],point2[1]
+        y1,y2=point1[2],point2[2]
+        weight=int(math.sqrt((x2-x1)**2+(y2-y1)**2))
+        return weight
+
+    def read_csv(self):
+        """Reads a csv file and returns a list of lists"""
+        with open(self.csv_file, 'r') as f:
+            reader = csv.reader(f)
+            return list(reader)
+
+    def create_nodes(self):
+        """Creates nodes from a csv file"""
+        #data = self.read_csv()
+        data=self.borders
+        graph = []
+        for row in data:
+            node1=None
+            node2=None
+            for node in graph:
+                if row[0]==node.name:
+                    node1=node
+                if row[1]==node.name:
+                    node2=node
+            if not node1:
+                node1=Node(row[0])
+            if not node2:
+                node2=Node(row[1])
+            Border(int(row[2]), node1, node2)
+            #border_tupel = Border(row[0], node1, node2)
+            #node_list.append(border_tupel)
+            if node1 not in graph:
+                graph.append(node1)
+            if node2 not in graph:
+                graph.append(node2)
+        self.graph=graph
 
 
-def solve(graph,node_list):
-    for key_, value_ in graph.items():
-        print(key_,value_)
-        for node in value_:
-            print(node)
+    def solve_greedy(self):
+        node=self.graph[0]
+        for i in range(len(self.graph)):
+            node=self.getNextNodeGreedy(node)
+        self.result.append(self.result[0])
+        for node in self.result:
+            print(node.name)
 
+    def get_result_ids(self):
+        result=[]
+        for node in self.result:
+            result.append(node.name)
+        return result
 
+    def getNextNodeGreedy(self,node):
+        next_node,entfernung=None,None
+        for border in node.borders:
+            old = False
+            if len(self.result)>0:
+                for old_node in self.result:
+                    if not old:
+                        if old_node in border.nodes:
+                            old=True
+                            break
+            if not old:
+                if not entfernung:
+                    entfernung=border.weight
+                if border.weight<=entfernung:
+                    next_node=border.nodes
+        try:
+            next_node=[ele for ele in next_node if ele != node]
+        except:
+            next_node=[None]
+        self.result.append(node)
+        self.graph=[ele for ele in self.graph if ele != node]
+        return next_node[0]
+
+    def calculate_weight(self):
+        weight=0
+        for i in range(len(self.result)-1):
+            weight+=self.result[i].getBorder(self.result[i+1]).weight
+        return weight

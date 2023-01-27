@@ -16,12 +16,7 @@ class Node:
     def addBorder(self,border):
         self.borders.append(border)
 
-    def getBorders(self):
-        #erg=[]
-        #for border in self.borders:
-        #    bordercopy=border.nodes
-        #    bordercopy.remove(self.name)
-        #    bordercopy=bordercopy[0]
-        #    erg.append((bordercopy,border.weight))
-        #return erg
-        pass
+    def getBorder(self,node):
+        for border in self.borders:
+            if node in border.nodes:
+                return border
