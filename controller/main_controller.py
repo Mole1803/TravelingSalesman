@@ -11,6 +11,10 @@ class PointsObject:
         self.config = ("id", "x", "y")
 
     def add_point(self, x, y):
+        """Adds a point to the list of points, with the format (id, x, y)
+        :param x: x coordinate of the point
+        :param y: y coordinate of the point
+        """
         self.points.append((len(self.points),x,y))
 
 class CCanvasController(QObject):
@@ -38,8 +42,8 @@ class CCanvasController(QObject):
         self.view.clear()
         for i in range(len(path)):
             #print(path[i])
-            first_point_index =path[i]
-            second_point_index =path[i-1]
+            first_point_index = path[i%len(path)]
+            second_point_index = path[(i+1)%len(path)]
             self.view.draw_path(self.point_list.points[first_point_index][1],self.point_list.points[first_point_index][2],
                                 self.point_list.points[second_point_index][1],self.point_list.points[second_point_index][2])
 
@@ -60,6 +64,7 @@ class CTableView(QObject):
         super().__init__()
         self.view = view
         self.point_list = point_list
+        self.set_model()
 
     def set_model(self):
         self.view.set_model(self.point_list.points, self.point_list.config)
@@ -95,7 +100,7 @@ class MainController(QObject):
         self.point_config.set_model()
 
     def greedy_solution(self):
-        if(len(self.points.points) == 0):
+        if len(self.points.points) <= 1:
             return
         graph = Graph()
         graph.read_points(self.points.points)
