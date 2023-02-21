@@ -304,6 +304,7 @@ class MainApplication(QtWidgets.QWidget):
         self.setMinimumSize(1100, 700)
         self.setWindowTitle("Main Application")
         self.setStyleSheet("background-color: #181818;")
+        self.setWindowIcon(QtGui.QIcon("icon.png"))
 
         # Frame
         self.frame = CFrame(self)
