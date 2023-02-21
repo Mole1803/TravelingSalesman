@@ -1,3 +1,5 @@
+import os
+
 from PySide6.QtGui import QBrush, QColor, QPen
 
 class CColor:
@@ -41,15 +43,15 @@ class CColorTheme:
         __ACCENT_COLOR_BRIGHTNESS = CColor.hex_to_QColor(ACCENT_COLOR).lightness()
         ACCENT_TEXT_COLOR = DARK_TEXT_COLOR if __ACCENT_COLOR_BRIGHTNESS > 128 else LIGHT_TEXT_COLOR
 
-
     class LightMode:
         BACKGROUND_COLOR = "#FFFFFF"
-        ACCENT_COLOR = "#FF00FF"#C2185B"
-        SECONDARY_COLOR = "#F5F5F5"
+        ACCENT_COLOR = "#4C6663"
+        SECONDARY_COLOR = "#E0E0E0"
+        ON_HOVER_COLOR = "#000000"
 
-        CANVAS_BACKGROUND_COLOR = "#000000"
-        POINT_COLOR = "#FFFFFF"
-        PATH_COLOR = "#00FF00"
+        CANVAS_BACKGROUND_COLOR = "#FFFFFF"
+        CANVAS_POINT_COLOR = "#000000"
+        CANVAS_PATH_COLOR = "d4c5e2"
 
         LIGHT_TEXT_COLOR = "#FFFFFF"
         DARK_TEXT_COLOR = "#000000"
@@ -60,8 +62,13 @@ class CColorTheme:
 
 
 class Settings:
+    BASE_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    STATIC_FOLDER = os.path.dirname("static")
+    ICON = "icon.png"
     def __init__(self):
         self.color_theme = CColorTheme.DarkMode
         self.font_size_large = 14
         self.font_size_medium = 12
         self.font_size_small = 10
+        print(self.BASE_PATH)
+
