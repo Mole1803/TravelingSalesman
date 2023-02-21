@@ -99,10 +99,11 @@ class CCanvas(QtWidgets.QGraphicsView):
 
 
 class CTableWidget(QtCore.QAbstractTableModel):
-    def __init__(self, data, headers=None, parent=None):
+    def __init__(self, data, headers=None, parent=None, settings=view_settings):
         super().__init__(parent)
         self._data = data
         self._headers = headers
+        self.settings=settings
 
     def data(self, index, role=QtCore.Qt.ItemDataRole.DisplayRole):
         # center text
@@ -110,6 +111,8 @@ class CTableWidget(QtCore.QAbstractTableModel):
             return QtCore.Qt.AlignmentFlag.AlignCenter
         if role == QtCore.Qt.ItemDataRole.DisplayRole:
             return self._data[index.row()][index.column()]
+        if role == QtCore.Qt.ItemDataRole.ForegroundRole:
+            return QtGui.QColor(self.settings.color_theme.TABLE_TEXT_COLOR)
 
     def rowCount(self, parent=None):
         """Set number of rows"""
@@ -303,7 +306,7 @@ class MainApplication(QtWidgets.QWidget):
         self.settings = view_settings
         self.setMinimumSize(1100, 700)
         self.setWindowTitle("Main Application")
-        self.setStyleSheet("background-color: #181818;")
+        self.setStyleSheet(f"background-color: {self.settings.color_theme.SHEET_COLOR}")
 
         # Frame
         self.frame = CFrame(self)
