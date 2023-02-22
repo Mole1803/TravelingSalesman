@@ -379,10 +379,12 @@ class CMenu(QtWidgets.QMenu):
 class CMenuBar(QtWidgets.QMenuBar):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.settings = view_settings
         self.addMenu(CMenu(self, text="&File"))
-
-
-
+        self.setStyleSheet(f"background-color: {self.settings.color_theme.ACCENT_COLOR};"
+                           f"selection-color:{self.settings.color_theme.CANVAS_PATH_COLOR};"
+                           f"selection-background-color: {self.settings.color_theme.ON_HOVER_COLOR};"
+                           f"border-radius: 0px")
 
 
 
