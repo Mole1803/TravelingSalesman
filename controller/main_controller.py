@@ -3,6 +3,7 @@ from PySide6 import QtCore, QtGui, QtWidgets
 from PySide6.QtCore import QObject, Slot
 from view.main_view import MainApplication
 from model.graph import Graph
+from controller.Thread import CThread, CWorker
 
 
 class PointsObject:
@@ -114,6 +115,7 @@ class MainController(QObject):
         self.mainApp = MainApplication()
         self.point_visualizer = CCanvasController(self.mainApp.canvas, self.points)
         self.point_config = CTableView(self.mainApp.list_view, self.points)
+        self.thread = None
 
         for algorithm in self.ALGORITHMS:
             self.mainApp.add_algorithm(algorithm)
@@ -139,7 +141,17 @@ class MainController(QObject):
     def start(self):
         algorithm = self.mainApp.radio_group.checked_button().text()
         print(algorithm)
-        getattr(self, self.ALGORITHMS[algorithm])()
+        #getattr(self, self.ALGORITHMS[algorithm])()
+
+        self.thread = CThread(getattr(self, self.ALGORITHMS[algorithm]))
+        self.thread.return_signal.connect(self.draw_path)
+        self.thread.start()
+
+
+
+    def draw_path(self, path):
+        self.point_visualizer.draw_path(path)
+
 
 
     def greedy_solution(self):
@@ -150,6 +162,10 @@ class MainController(QObject):
         graph.create_nodes()
         graph.solve_greedy()
         result = graph.get_result_ids()
-        self.point_visualizer.draw_path(result)
+        return result
+
+    def brute_force_solution(self):
+        # TODO: Implement brute force solution
+        pass
 
 
