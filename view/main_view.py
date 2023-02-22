@@ -412,7 +412,10 @@ class MainApplication(QtWidgets.QWidget):
 
         self.radio_group = CRadioGroup(self, pos=(760, 460), size=(150, 100))
 
-        self.menu = CMenuBar(self)
+        #self.menu = CMenuBar(self)
+
+        # not resizable
+        self.setFixedSize(self.size())
 
         # Buttons
         self.start_button = CButton(self, text="Start", pos=(760, 590), size=(300, 30))

@@ -166,6 +166,11 @@ class MainController(QObject):
 
     def brute_force_solution(self):
         # TODO: Implement brute force solution
-        pass
+        graph = Graph()
+        graph.read_points(self.points.points)
+        graph.create_nodes()
+        graph.solve_brute_force_start()
+        result = graph.get_result_ids()
+        return result
 
 
