@@ -1,5 +1,6 @@
 import typing
 
+from PyQt6.QtWidgets import QToolBar
 from PySide6.QtCore import QObject
 from PySide6 import QtWidgets, QtCore, QtGui
 from PySide6.QtWidgets import QListView, QTableView, QTableWidget
@@ -67,7 +68,7 @@ class CCanvas(QtWidgets.QGraphicsView):
         """
         if point_color is None:
             point_color = self.settings.color_theme.CANVAS_POINT_COLOR
-        self.scene.addEllipse(x, y, self.point_radius, self.point_radius,
+        self.scene.addEllipse(x-(self.point_radius/2.0), y-(self.point_radius/2.0), self.point_radius, self.point_radius,
                               pen=QtGui.QPen(QtGui.QColor(point_color), self.point_radius))
 
     def draw_path(self, x_1: int, y_1: int, x_2: int, y_2: int, path_color:str= None) -> None:
@@ -296,6 +297,94 @@ class CDivider(QtWidgets.QFrame):
     def update_theme(self):
         self.setStyleSheet(f" border: 2px solid {self.settings.color_theme.SECONDARY_COLOR};")
 
+class CRadioButton(QtWidgets.QRadioButton):
+    def __init__(self, parent=None, text="Button", size=(100, 30), pos=(0, 0), settings=view_settings):
+        super().__init__(parent)
+        self.setMinimumSize(size[0], size[1])
+        self.setMaximumSize(size[0], size[1])
+        self.setGeometry(pos[0], pos[1], size[0], size[1])
+        self.setText(text)
+
+        self.settings = settings
+        self.update_settings()
+
+    def update_settings(self):
+        self.update_theme()
+
+    def update_theme(self):
+        self.setStyleSheet("QRadioButton {"
+                           f"background-color: {self.settings.color_theme.BACKGROUND_COLOR};"
+                           f" border: 0px solid transparent;"
+                           f" color: {self.settings.color_theme.LIGHT_TEXT_COLOR};"
+                           f" font-weight: bold;"
+                           f" border-radius: 5px;"
+                           "}"
+                           
+                           "QRadioButton:hover {"
+                           f" border: 1px solid {self.settings.color_theme.ON_HOVER_COLOR};"
+                           "}")
+
+class CRadioGroup(QtWidgets.QGroupBox):
+    algorithm = QtCore.Signal(str)
+    def __init__(self, parent=None, size=(100, 30), pos=(0, 0), settings=view_settings):
+        super().__init__(parent)
+        self.setMinimumSize(size[0], size[1])
+        self.setMaximumSize(size[0], size[1])
+        self.setGeometry(pos[0], pos[1], size[0], size[1])
+        self.layout = QtWidgets.QGridLayout()
+        self.setLayout(self.layout)
+
+
+
+        self.settings = settings
+        self.update_settings()
+
+    def add_radio_button(self, text):
+        radio_button = CRadioButton(self, text=text)
+        self.layout.addWidget(radio_button)
+        # if more than one radio button is added, check the first one
+        if self.layout.count() > 1:
+            self.layout.itemAt(0).widget().setChecked(True)
+
+    def checked_button(self):
+        for i in range(self.layout.count()):
+            if self.layout.itemAt(i).widget().isChecked():
+                return self.layout.itemAt(i).widget()
+
+    def update_settings(self):
+        self.update_theme()
+
+    def update_theme(self):
+        self.setStyleSheet("QGroupBox {"
+                           f"background-color: {self.settings.color_theme.BACKGROUND_COLOR};"
+                           f" border: 0px solid transparent;"
+                           f" color: {self.settings.color_theme.LIGHT_TEXT_COLOR};"
+                           f" font-weight: bold;"
+                           f" border-radius: 5px;"
+                           "}"
+                           
+                           "QGroupBox:hover {"
+                           f" border: 1px solid {self.settings.color_theme.ON_HOVER_COLOR};"
+                           "}")
+
+
+class CMenu(QtWidgets.QMenu):
+    def __init__(self,parent=None, text="Menu"):
+        super().__init__(parent)
+        self.setTitle(text)
+        self.addAction("New")
+
+
+
+class CMenuBar(QtWidgets.QMenuBar):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.addMenu(CMenu(self, text="&File"))
+
+
+
+
+
 
 
 class MainApplication(QtWidgets.QWidget):
@@ -315,9 +404,13 @@ class MainApplication(QtWidgets.QWidget):
         self.canvas = CCanvas(self, pos=(40, 40), size=(670, 620))#(600, 400)
 
         # Point list
-        self.list_view = CTableView(self, pos=(760, 40), size=(300, 535))
+        self.list_view = CTableView(self, pos=(760, 40), size=(300, 400))#size=(300, 535)
 
         self.divider = CDivider(self, pos=(734,40), size=(1, 620))
+
+        self.radio_group = CRadioGroup(self, pos=(760, 460), size=(150, 100))
+
+        self.menu = CMenuBar(self)
 
         # Buttons
         self.start_button = CButton(self, text="Start", pos=(760, 590), size=(300, 30))
@@ -326,6 +419,8 @@ class MainApplication(QtWidgets.QWidget):
 
     def set_theme(self, theme):
         self.canvas.update_theme()
+        self.list_view.update_theme()
+        self.radio_group.update_theme()
         # self.list_view.set_theme(theme)
         self.start_button.update_theme()
         self.clear_button.update_theme()
@@ -333,3 +428,7 @@ class MainApplication(QtWidgets.QWidget):
     def resizeEvent(self, event):
         # self.canvas.resizeEvent(event)
         self.frame.resizeEvent(event)
+
+    def add_algorithm(self, algorithm):
+        self.radio_group.add_radio_button(algorithm)
+

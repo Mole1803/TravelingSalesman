@@ -72,6 +72,11 @@ class CTableView(QObject):
 
 
 class MainController(QObject):
+    ALGORITHMS = {
+        "Greedy": "greedy_solution",
+        "Brute Force": "brute_force_solution",
+    }
+
     def __init__(self):
         super().__init__()
         self.points = PointsObject()
@@ -80,9 +85,12 @@ class MainController(QObject):
         self.point_visualizer = CCanvasController(self.mainApp.canvas, self.points)
         self.point_config = CTableView(self.mainApp.list_view, self.points)
 
+        for algorithm in self.ALGORITHMS:
+            self.mainApp.add_algorithm(algorithm)
+
         # Refresh signals
         self.point_visualizer.refresh_signal.connect(self.refresh)
-        self.mainApp.start_button.clicked.connect(self.greedy_solution)
+        self.mainApp.start_button.clicked.connect(self.start)#self.greedy_solution)
         self.mainApp.clear_button.clicked.connect(self.point_visualizer.clear)
 
 
@@ -98,6 +106,12 @@ class MainController(QObject):
         print("refresh")
         print(self.points.points)
         self.point_config.set_model()
+
+    def start(self):
+        algorithm = self.mainApp.radio_group.checked_button().text()
+        print(algorithm)
+        getattr(self, self.ALGORITHMS[algorithm])()
+
 
     def greedy_solution(self):
         if len(self.points.points) <= 1:

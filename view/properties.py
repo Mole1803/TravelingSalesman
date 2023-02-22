@@ -24,7 +24,7 @@ class CColor:
 
 class CColorTheme:
     class DarkMode:
-        SHEET_COLOR = "#113311"
+        SHEET_COLOR = "#181818"
         TABLE_TEXT_COLOR = "#BBBBBB"
 
         BACKGROUND_COLOR = "#181818"
