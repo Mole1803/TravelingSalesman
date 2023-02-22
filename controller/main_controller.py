@@ -38,6 +38,12 @@ class CCanvasController(QObject):
         self.point_list = point_list
         self.view = view
         self.view.click_signal.connect(self.draw_point_signal_func)
+        self.view.update_request.connect(self.refresh_request)
+        self.path = []
+
+
+    def refresh_request(self):
+        self.refresh_signal.emit()
 
     @Slot(int, int)
     def draw_point_signal_func(self, x, y):
@@ -60,8 +66,11 @@ class CCanvasController(QObject):
             self.view.draw_point(point[1], point[2])
 
     def draw_path(self, path: list):
-        print(path)
+        if len(path) != len(self.point_list.points)+1:
+            return
+
         self.view.clear()
+        self.path = path
         for i in range(len(path)):
             #print(path[i])
             first_point_index = self.getPointindexById(path[i%len(path)])
@@ -78,12 +87,14 @@ class CCanvasController(QObject):
                 return x
     def clear(self):
         self.point_list.points = []
+        self.path = []
         self.refresh_signal.emit()
         self.refresh()
 
     def refresh(self):
         self.view.clear()
         self.draw_points()
+        self.draw_path(self.path)
 
 
 
