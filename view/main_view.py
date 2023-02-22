@@ -113,6 +113,7 @@ class CCanvas(QtWidgets.QGraphicsView):
         self.clear()
 
     def c_resize(self):
+        """Resizes the canvas to the size of the parent widget"""
         x,y,w,h = self.resize_func()
         self.setGeometry(x,y,w,h)
         self.setSceneRect(0, 0, w, h)
