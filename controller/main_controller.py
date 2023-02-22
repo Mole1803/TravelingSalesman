@@ -41,6 +41,15 @@ class CCanvasController(QObject):
 
     @Slot(int, int)
     def draw_point_signal_func(self, x, y):
+        if len(self.point_list.points)>0:
+            for point in self.point_list.points:
+                if x in range(point[1]-5,point[1]+5) and y in range(point[2]-5,point[2]+5):
+                    #self.point_list.points.remove(point)
+                    self.point_list.delete_point(point[0])
+                    self.refresh_signal.emit()
+
+                    #self.draw_points()
+                    return
         self.view.draw_point(x, y)
         self.point_list.add_point(x, y)
         self.refresh_signal.emit()
@@ -51,20 +60,30 @@ class CCanvasController(QObject):
             self.view.draw_point(point[1], point[2])
 
     def draw_path(self, path: list):
+        print(path)
         self.view.clear()
         for i in range(len(path)):
             #print(path[i])
-            first_point_index = path[i%len(path)]
-            second_point_index = path[(i+1)%len(path)]
+            first_point_index = self.getPointindexById(path[i%len(path)])
+            second_point_index = self.getPointindexById(path[(i+1)%len(path)])
+
             self.view.draw_path(self.point_list.points[first_point_index][1],self.point_list.points[first_point_index][2],
                                 self.point_list.points[second_point_index][1],self.point_list.points[second_point_index][2])
 
         self.draw_points()
 
+    def getPointindexById(self,id):
+        for x in range(len(self.point_list.points)):
+            if self.point_list.points[x][0]==id:
+                return x
     def clear(self):
-        self.view.clear()
         self.point_list.points = []
         self.refresh_signal.emit()
+        self.refresh()
+
+    def refresh(self):
+        self.view.clear()
+        self.draw_points()
 
 
 
@@ -116,8 +135,8 @@ class MainController(QObject):
     @Slot()
     def refresh(self):
         #self.mainApp.list_view.model().layoutChanged.emit()
-        print(self.points.points)
         self.point_config.set_model()
+        self.point_visualizer.refresh()
 
     def start(self):
         algorithm = self.mainApp.radio_group.checked_button().text()
