@@ -40,12 +40,3 @@ class CThread(QThread):
 
     def result_signal(self, return_value):
         self.return_signal.emit(return_value)
-
-
-
-
-
-
-
-
-

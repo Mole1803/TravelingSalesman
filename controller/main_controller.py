@@ -182,5 +182,3 @@ class MainController(QObject):
         graph.solve_brute_force_start()
         result = graph.get_result_ids()
         return result
-
-

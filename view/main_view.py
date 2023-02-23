@@ -132,7 +132,7 @@ class CTableWidget(QtCore.QAbstractTableModel):
         if role == QtCore.Qt.ItemDataRole.DisplayRole:
             return self._data[index.row()][index.column()]
         if role == QtCore.Qt.ItemDataRole.ForegroundRole:
-            return QtGui.QColor(self.settings.color_theme.TABLE_TEXT_COLOR)
+            return QtGui.QColor(self.settings.color_theme.LIGHT_TEXT_COLOR)
 
     def rowCount(self, parent=None):
         """Set number of rows"""
@@ -453,7 +453,7 @@ class MainApplication(QtWidgets.QWidget):
         self.settings = view_settings
         self.setMinimumSize(1100, 700)
         self.setWindowTitle("Traveling Salesman")
-        self.setStyleSheet(f"background-color: {self.settings.color_theme.SHEET_COLOR}")
+        self.setStyleSheet(f"background-color: {self.settings.color_theme.BACKGROUND_COLOR}")
         try:
             self.setWindowIcon(QtGui.QIcon(view_settings.APP_ICON_PATH))
         except:
