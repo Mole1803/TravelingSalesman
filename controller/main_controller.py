@@ -51,6 +51,7 @@ class CCanvasController(QObject):
             for point in self.point_list.points:
                 if x in range(point[1]-5,point[1]+5) and y in range(point[2]-5,point[2]+5):
                     #self.point_list.points.remove(point)
+                    self.path = []
                     self.point_list.delete_point(point[0])
                     self.refresh_signal.emit()
 
