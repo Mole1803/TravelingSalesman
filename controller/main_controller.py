@@ -100,7 +100,7 @@ class CCanvasController(QObject):
 
 
 
-class CTableView(QObject):
+class CTableViewController(QObject):
     def __init__(self, view, point_list=None):
         super().__init__()
         self.view = view
@@ -124,7 +124,7 @@ class MainController(QObject):
         self.app = QtWidgets.QApplication([])
         self.mainApp = MainApplication()
         self.point_visualizer = CCanvasController(self.mainApp.canvas, self.points)
-        self.point_config = CTableView(self.mainApp.list_view, self.points)
+        self.point_config = CTableViewController(self.mainApp.list_view, self.points)
         self.thread = None
 
         for algorithm in self.ALGORITHMS:
