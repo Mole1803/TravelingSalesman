@@ -88,3 +88,4 @@ class Graph:
                 min_weight, min_path = self.solve_brute_force(border.node, visited[:], weight + border.weight,
                                                               min_weight, min_path)
         return min_weight, min_path
+
