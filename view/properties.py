@@ -24,7 +24,7 @@ class CColor:
 
 class CColorTheme:
     class DarkMode:
-        SHEET_COLOR = "#113311"
+        SHEET_COLOR = "#181818"
         TABLE_TEXT_COLOR = "#BBBBBB"
 
         BACKGROUND_COLOR = "#181818"
@@ -63,8 +63,10 @@ class CColorTheme:
 
 class Settings:
     BASE_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    STATIC_FOLDER = os.path.dirname("static")
-    ICON = "icon.png"
+    STATIC_FOLDER = os.path.join(BASE_PATH, "static")
+
+    ICON = "icon_1.ico"
+    APP_ICON_PATH = os.path.join(BASE_PATH, STATIC_FOLDER, ICON)
     def __init__(self):
         self.color_theme = CColorTheme.DarkMode
         self.font_size_large = 14

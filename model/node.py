@@ -7,6 +7,7 @@ class Border:
         self.node = node_1
         node_2.addBorder(self)
 
+
 class Node:
     def __init__(self, name):
         self.name = name
@@ -17,5 +18,5 @@ class Node:
 
     def getBorder(self,node):
         for border in self.borders:
-            if node in border.nodes:
+            if node == border.node:
                 return border

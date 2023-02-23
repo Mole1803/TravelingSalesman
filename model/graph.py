@@ -1,5 +1,6 @@
 import csv
 import math
+from copy import copy
 
 from model.node import Border,Node
 
@@ -11,6 +12,7 @@ class Graph:
         self.graph=[]
         self.result=[]
         self.create_nodes()
+        self.counter = 0
 
     def read_points(self,points):
         #self.points=points
@@ -22,7 +24,7 @@ class Graph:
     def calculate_single_weight(point1,point2):
         x1,x2=point1[1],point2[1]
         y1,y2=point1[2],point2[2]
-        weight=int(math.sqrt((x2-x1)**2+(y2-y1)**2))
+        weight=math.sqrt((x2-x1)**2+(y2-y1)**2)
         return weight
 
     def read_csv(self):
@@ -57,6 +59,7 @@ class Graph:
             if node2 not in graph:
                 graph.append(node2)
         self.graph=graph
+        print(graph)
 
 
     def solve_greedy(self):
@@ -97,3 +100,26 @@ class Graph:
         for i in range(len(self.result)-1):
             weight+=self.result[i].getBorder(self.result[i+1]).weight
         return weight
+
+    def solve_brute_force_start(self):
+        min_weight, min_path = self.solve_brute_force(self.graph[0], [], 0, float('inf'), [])
+        self.result=min_path
+        print(self.counter)
+
+
+
+    def solve_brute_force(self, node, visited, weight, min_weight, min_path):
+        self.counter+=1
+        visited.append(node)
+        if len(visited) == len(self.graph):
+            weight += node.getBorder(visited[0]).weight
+            visited.append(visited[0])
+            if weight < min_weight:
+                min_weight = weight
+                min_path = visited
+
+            return min_weight, min_path
+        for border in node.borders:
+            if border.node not in visited:
+                min_weight, min_path = self.solve_brute_force(border.node, visited[:], weight + border.weight, min_weight, min_path)
+        return min_weight, min_path
