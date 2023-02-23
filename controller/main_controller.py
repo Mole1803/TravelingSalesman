@@ -3,30 +3,7 @@ from PySide6.QtCore import QObject, Slot
 from view.main_view import MainApplication
 from model.graph import Graph
 from controller.Thread import CThread, CWorker
-
-
-class PointsObject:
-    def __init__(self):
-        self.points = []
-        self.config = ("id", "x", "y")
-
-    def add_point(self, x, y):
-        """Adds a point to the list of points, with the format (id, x, y)
-        :param x: x coordinate of the point
-        :param y: y coordinate of the point
-        """
-        self.points.append((len(self.points),x,y))
-
-    def delete_point(self, id):
-        """Deletes a point from the list of points
-        :param id: id of the point to be deleted
-        """
-        for i in range(len(self.points)):
-            if self.points[i][0] == id:
-                self.points.pop(i)
-                break
-        for i in range(len(self.points)):
-            self.points[i] = (i, self.points[i][1], self.points[i][2])
+from model.point import PointsObject,Point
 
 class CCanvasController(QObject):
     refresh_signal = QtCore.Signal()
@@ -48,10 +25,10 @@ class CCanvasController(QObject):
     def draw_point_signal_func(self, x, y):
         if len(self.point_list.points)>0:
             for point in self.point_list.points:
-                if x in range(point[1]-5,point[1]+5) and y in range(point[2]-5,point[2]+5):
+                if x in range(point.x-5,point.x+5) and y in range(point.y-5,point.y+5):
                     #self.point_list.points.remove(point)
                     self.path = []
-                    self.point_list.delete_point(point[0])
+                    self.point_list.delete_point(point.id)
                     self.refresh_signal.emit()
 
                     #self.draw_points()
@@ -63,7 +40,7 @@ class CCanvasController(QObject):
 
     def draw_points(self):
         for point in self.point_list.points:
-            self.view.draw_point(point[1], point[2])
+            self.view.draw_point(point.x, point.y)
 
     def draw_path(self, path: list):
         if len(path) != len(self.point_list.points)+1:
@@ -75,14 +52,14 @@ class CCanvasController(QObject):
             first_point_index = self.getPointindexById(path[i%len(path)])
             second_point_index = self.getPointindexById(path[(i+1)%len(path)])
 
-            self.view.draw_path(self.point_list.points[first_point_index][1],self.point_list.points[first_point_index][2],
-                                self.point_list.points[second_point_index][1],self.point_list.points[second_point_index][2])
+            self.view.draw_path(self.point_list.points[first_point_index].x,self.point_list.points[first_point_index].y,
+                                self.point_list.points[second_point_index].x,self.point_list.points[second_point_index].y)
 
         self.draw_points()
 
     def getPointindexById(self,id):
         for x in range(len(self.point_list.points)):
-            if self.point_list.points[x][0]==id:
+            if self.point_list.points[x].id == id:
                 return x
     def clear(self):
         self.point_list.points = []

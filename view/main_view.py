@@ -128,7 +128,7 @@ class CTableWidget(QtCore.QAbstractTableModel):
         if role == QtCore.Qt.ItemDataRole.TextAlignmentRole:
             return QtCore.Qt.AlignmentFlag.AlignCenter
         if role == QtCore.Qt.ItemDataRole.DisplayRole:
-            return self._data[index.row()][index.column()]
+            return self._data[index.row()].id_to_attribute(index.column())
         if role == QtCore.Qt.ItemDataRole.ForegroundRole:
             return QtGui.QColor(self.settings.color_theme.LIGHT_TEXT_COLOR)
 

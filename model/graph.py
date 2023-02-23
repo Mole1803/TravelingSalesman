@@ -18,20 +18,17 @@ class Graph:
         #self.points=points
         for i in range(len(points)):
             for j in range(i+1,len(points)):
-                self.borders.append((points[i][0],points[j][0],Graph.calculate_single_weight(points[i],points[j])))
+                self.borders.append((points[i].id,points[j].id,Graph.calculate_single_weight(points[i],points[j])))
 
     @staticmethod
     def calculate_single_weight(point1,point2):
-        x1,x2=point1[1],point2[1]
-        y1,y2=point1[2],point2[2]
-        weight=math.sqrt((x2-x1)**2+(y2-y1)**2)
-        return weight
+        return math.sqrt((point2.x-point1.x)**2+(point2.y-point1.y)**2)
 
-    def read_csv(self):
-        """Reads a csv file and returns a list of lists"""
-        with open(self.csv_file, 'r') as f:
-            reader = csv.reader(f)
-            return list(reader)
+    #def read_csv(self):
+    #    """Reads a csv file and returns a list of lists"""
+    #    with open(self.csv_file, 'r') as f:
+    #        reader = csv.reader(f)
+    #        return list(reader)
 
     def create_nodes(self):
         """Creates nodes from a csv file"""
