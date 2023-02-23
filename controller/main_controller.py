@@ -1,4 +1,3 @@
-from PyQt6.QtWidgets import QTableWidget
 from PySide6 import QtCore, QtGui, QtWidgets
 from PySide6.QtCore import QObject, Slot
 from view.main_view import MainApplication

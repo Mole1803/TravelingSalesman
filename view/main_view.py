@@ -1,7 +1,5 @@
 import typing
-from functools import partial
 
-from PyQt6.QtWidgets import QToolBar
 from PySide6.QtCore import QObject
 from PySide6 import QtWidgets, QtCore, QtGui
 from PySide6.QtWidgets import QListView, QTableView, QTableWidget
