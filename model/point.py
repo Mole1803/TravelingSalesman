@@ -1,7 +1,10 @@
+from typing import Tuple
+
+
 class PointsObject:
     def __init__(self):
-        self.points = []
-        self.config = ("id", "x", "y")
+        self.points: list[Point] = []
+        self.config: Tuple[str, str, str] = ("id", "x", "y")
 
     def add_point(self, x, y):
         """Adds a point to the list of points, with the format (id, x, y)

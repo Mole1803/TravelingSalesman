@@ -1,10 +1,9 @@
 import typing
 
-from PySide6.QtCore import QObject
 from PySide6 import QtWidgets, QtCore, QtGui
-from PySide6.QtWidgets import QListView, QTableView, QTableWidget
 from PySide6.QtGui import QBrush, QColor, QPen
-from view.properties import Settings, CColor, CColorTheme
+from PySide6.QtWidgets import QTableView
+from view.properties import Settings
 
 view_settings = Settings()
 
@@ -24,7 +23,6 @@ class CCanvas(QtWidgets.QGraphicsView):
         # Sizing
         self.setGeometry(pos[0], pos[1], size[0], size[1])
         self.setMinimumSize(size[0], size[1])
-        # self.setMaximumSize(size[0], size[1])
         self.setSceneRect(0, 0, size[0], size[1])
         self.ViewportAnchor = QtWidgets.QGraphicsView.ViewportAnchor.NoAnchor
         self.setSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
@@ -37,16 +35,12 @@ class CCanvas(QtWidgets.QGraphicsView):
         self.point_radius = point_radius
         self.path_thickness = 2
 
-        # Misc
-        # self.setMouseTracking(True)
-
         # Scrollbar policy
         self.horizontalScrollBar().setEnabled(False)
         self.verticalScrollBar().setEnabled(False)
         self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-
-        self.resize_func = None
+        self.resize_func= None
 
     def mousePressEvent(self, event: QtGui.QMouseEvent) -> None:
         if event.button() != QtCore.Qt.MouseButton.LeftButton:
