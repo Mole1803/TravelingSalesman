@@ -60,7 +60,7 @@ class CCanvasController(QObject):
         self.view.draw_point(x, y)
         self.point_list.add_point(x, y)
         self.refresh_signal.emit()
-        print("x: " + str(x) + " y: " + str(y))
+        #print("x: " + str(x) + " y: " + str(y))
 
     def draw_points(self):
         for point in self.point_list.points:
@@ -73,7 +73,6 @@ class CCanvasController(QObject):
         self.view.clear()
         self.path = path
         for i in range(len(path)):
-            #print(path[i])
             first_point_index = self.getPointindexById(path[i%len(path)])
             second_point_index = self.getPointindexById(path[(i+1)%len(path)])
 
@@ -152,7 +151,6 @@ class MainController(QObject):
 
     def start(self):
         algorithm = self.mainApp.radio_group.checked_button().text()
-        print(algorithm)
         #getattr(self, self.ALGORITHMS[algorithm])()
 
         self.thread = CThread(getattr(self, self.ALGORITHMS[algorithm]))

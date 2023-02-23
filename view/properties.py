@@ -72,5 +72,5 @@ class Settings:
         self.font_size_large = 14
         self.font_size_medium = 12
         self.font_size_small = 10
-        print(self.BASE_PATH)
+
 

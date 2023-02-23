@@ -12,7 +12,7 @@ class Graph:
         self.graph=[]
         self.result=[]
         self.create_nodes()
-        self.counter = 0
+
 
     def read_points(self,points):
         #self.points=points
@@ -59,7 +59,7 @@ class Graph:
             if node2 not in graph:
                 graph.append(node2)
         self.graph=graph
-        print(graph)
+
 
 
     def solve_greedy(self):
@@ -104,12 +104,11 @@ class Graph:
     def solve_brute_force_start(self):
         min_weight, min_path = self.solve_brute_force(self.graph[0], [], 0, float('inf'), [])
         self.result=min_path
-        print(self.counter)
+
 
 
 
     def solve_brute_force(self, node, visited, weight, min_weight, min_path):
-        self.counter+=1
         visited.append(node)
         if len(visited) == len(self.graph):
             weight += node.getBorder(visited[0]).weight

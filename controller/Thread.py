@@ -11,7 +11,6 @@ class CWorker(QObject):
         self.func = func
         self.args = args
         self.kwargs = kwargs
-        print("Worker init")
 
 
     def run(self):

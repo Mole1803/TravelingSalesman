@@ -19,7 +19,6 @@ class CCanvas(QtWidgets.QGraphicsView):
     def __init__(self, parent=None, size=(600, 400), pos=(25, 25), point_radius=6, settings=view_settings):
         super().__init__(parent)
         self.inital_size = size
-        print("Canvas size: ", size)
         # Setup scene
         self.scene = QtWidgets.QGraphicsScene(self)
         self.setScene(self.scene)
@@ -57,7 +56,6 @@ class CCanvas(QtWidgets.QGraphicsView):
         points = self.mapToScene(event.pos())
         pos_x = int((points.x() * self.inital_size[0]) / self.width())
         pos_y = int((points.y() * self.inital_size[1]) / self.height())
-        print(self.size(), points.x(), points.y(), pos_x, pos_y)
         valid_x = 0 <= pos_x <= self.width()
         valid_y = 0 <= pos_y <= self.height()
         if not valid_x or not valid_y:
