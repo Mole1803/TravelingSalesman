@@ -27,11 +27,11 @@ class Graph:
         weight=math.sqrt((x2-x1)**2+(y2-y1)**2)
         return weight
 
-    def read_csv(self):
-        """Reads a csv file and returns a list of lists"""
-        with open(self.csv_file, 'r') as f:
-            reader = csv.reader(f)
-            return list(reader)
+    #def read_csv(self):
+    #    """Reads a csv file and returns a list of lists"""
+    #    with open(self.csv_file, 'r') as f:
+    #        reader = csv.reader(f)
+    #        return list(reader)
 
     def create_nodes(self):
         """Creates nodes from a csv file"""
@@ -59,7 +59,6 @@ class Graph:
             if node2 not in graph:
                 graph.append(node2)
         self.graph=graph
-
 
 
     def solve_greedy(self):
@@ -94,12 +93,6 @@ class Graph:
         self.result.append(node)
         self.graph=[ele for ele in self.graph if ele != node]
         return next_node
-
-    def calculate_weight(self):
-        weight=0
-        for i in range(len(self.result)-1):
-            weight+=self.result[i].getBorder(self.result[i+1]).weight
-        return weight
 
     def solve_brute_force_start(self):
         min_weight, min_path = self.solve_brute_force(self.graph[0], [], 0, float('inf'), [])
