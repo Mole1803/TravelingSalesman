@@ -175,7 +175,8 @@ class MainController(QObject):
         return result
 
     def brute_force_solution(self):
-        # TODO: Implement brute force solution
+        if len(self.points.points) <= 1:
+            return
         graph = Graph()
         graph.read_points(self.points.points)
         graph.create_nodes()
