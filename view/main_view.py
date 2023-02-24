@@ -15,7 +15,7 @@ class CCanvas(QtWidgets.QGraphicsView):
 
     def __init__(self, parent=None, size=(600, 400), pos=(25, 25), point_radius=6, settings=view_settings):
         super().__init__(parent)
-        self.inital_size = size
+        self.initial_size = size
         # Setup scene
         self.scene = QtWidgets.QGraphicsScene(self)
         self.setScene(self.scene)
@@ -46,8 +46,8 @@ class CCanvas(QtWidgets.QGraphicsView):
         if event.button() != QtCore.Qt.MouseButton.LeftButton:
             return
         points = self.mapToScene(event.pos())
-        pos_x = int((points.x() * self.inital_size[0]) / self.width())
-        pos_y = int((points.y() * self.inital_size[1]) / self.height())
+        pos_x = int((points.x() * self.initial_size[0]) / self.width())
+        pos_y = int((points.y() * self.initial_size[1]) / self.height())
         valid_x = 0 <= pos_x <= self.width()
         valid_y = 0 <= pos_y <= self.height()
         if not valid_x or not valid_y:
@@ -64,8 +64,8 @@ class CCanvas(QtWidgets.QGraphicsView):
         """
         if point_color is None:
             point_color = self.settings.color_theme.CANVAS_POINT_COLOR
-        x = int((x * self.width()) / self.inital_size[0])
-        y = int((y * self.height()) / self.inital_size[1])
+        x = int((x * self.width()) / self.initial_size[0])
+        y = int((y * self.height()) / self.initial_size[1])
         self.scene.addEllipse(x - (self.point_radius / 2.0), y - (self.point_radius / 2.0), self.point_radius,
                               self.point_radius,
                               pen=QtGui.QPen(QtGui.QColor(point_color), self.point_radius))
@@ -81,10 +81,10 @@ class CCanvas(QtWidgets.QGraphicsView):
         """
         if path_color is None:
             path_color = self.settings.color_theme.CANVAS_PATH_COLOR
-        x_1 = int((x_1 * self.width()) / self.inital_size[0])
-        y_1 = int((y_1 * self.height()) / self.inital_size[1])
-        x_2 = int((x_2 * self.width()) / self.inital_size[0])
-        y_2 = int((y_2 * self.height()) / self.inital_size[1])
+        x_1 = int((x_1 * self.width()) / self.initial_size[0])
+        y_1 = int((y_1 * self.height()) / self.initial_size[1])
+        x_2 = int((x_2 * self.width()) / self.initial_size[0])
+        y_2 = int((y_2 * self.height()) / self.initial_size[1])
 
         self.scene.addLine(x_1, y_1, x_2, y_2, pen=QPen(QColor(path_color), self.path_thickness))
 
@@ -240,6 +240,7 @@ class CTableView(QTableView):
             f"border: 1px solid {self.settings.color_theme.SECONDARY_COLOR};"
             "border-radius: 5px;"
             "}"
+
         )
 
     def c_resize(self):

@@ -13,7 +13,7 @@ class Border:
 
 
 class Node:
-    def __init__(self, id_):
+    def __init__(self, id_: int):
         self.id: int = id_
         self.borders: list[Border] = []
 
