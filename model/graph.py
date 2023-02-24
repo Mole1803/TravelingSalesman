@@ -76,6 +76,8 @@ class Graph:
 
     def solve_brute_force(self, node, visited, weight, min_weight, min_path):
         visited.append(node)
+        if weight > min_weight:
+            return min_weight, min_path
         if len(visited) == len(self.graph):
             weight += node.get_border(visited[0]).weight
             visited.append(visited[0])
