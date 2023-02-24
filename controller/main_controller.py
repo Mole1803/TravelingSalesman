@@ -43,6 +43,7 @@ class CCanvasController(QObject):
         if len(path) != len(self.point_list.points) + 1:
             return
         self.path = path
+        self.view.clear()
         for i in range(len(path)):
             first_point_index = self.get_point_index_by_id(path[i % len(path)])
             second_point_index = self.get_point_index_by_id(path[(i + 1) % len(path)])
